@@ -62,7 +62,8 @@ ignore = [
   "D403",  # first-line-capitalized
   "D415",  # ends-in-punctuation
   "UP015",  # redundant-open-modes
-  "ANN",  # flake8-annotations
+  "ANN101",  # missing-type-self
+  "ANN102",  # missing-type-cls
   "S101",  # assert
   "BLE",  # flake8-blind-except
   "FBT",  # flake8-boolean-trap
