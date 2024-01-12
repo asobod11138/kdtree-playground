@@ -36,20 +36,13 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"mosapride.zenkaku",
-				"ms-azuretools.vscode-docker",
-				"tamasfe.even-better-toml",
-				"ms-python.python",
-				"ms-python.vscode-pylance",
-				"ms-toolsai.jupyter",
-				"charliermarsh.ruff",
-				"ms-python.mypy-type-checker",
-				"njpwerner.autodocstring",
-				"jgclark.vscode-todo-highlight",
-				"streetsidesoftware.code-spell-checker",
+				"mhutchie.git-graph",
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
-				"GitHub.copilot-labs"
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"charliermarsh.ruff",
+				"tamasfe.even-better-toml"
 			],
 			// Python コードのフォーマッタやリンタ等の設定
 			"settings": {
