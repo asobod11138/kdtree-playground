@@ -1,0 +1,110 @@
+[tool.poetry]
+name = "kdtree_playground"
+version = "0.1.0"
+description = "kdtree_playground"
+authors = ["asobod11138"]
+readme="README.md"
+packages = [
+  { include = "kdtree_lib" },
+]
+exclude = [
+  "**/.git"
+]
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+ 
+[tool.poetry.dependencies]
+python = ">=3.8"
+numpy = "*"
+pytest-benchmark = "^4.0.0"
+tqdm = "^4.66.1"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.4.3"
+pytest-xdist = "^3.4.0"
+pytest-cov = "^4.1.0"
+
+[tool.poetry.group.lint.dependencies]
+mypy = "^1.7.0"
+ruff = "^0.1.6"
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^7.1.2"
+pydata-sphinx-theme = "^0.14.3"
+sphinx-last-updated-by-git = "^0.3.6"
+sphinx-click = "^5.0.1"
+
+[tool.mypy]
+python_version = "3.8"
+
+[[tool.mypy.overrides]]
+module = ["ulid", "scipy.spatial"]
+ignore_missing_imports = true
+
+[tool.ruff]
+select = ["ALL"]
+line-length = 140
+target-version = "py38"
+ignore = [
+  "C90",  # mccabe
+  "N813",  # camelcase-imported-as-lowercase
+  "N999",  # invalid-module-name
+  "D100",  # public-module
+  "D104",  # public-package
+  "D105",  # magic-method
+  "D107",  # public-init
+  "D202",  # no-blank-line-after-function
+  "D212",  # multi-line-summary-first-line
+  "D213",  # multi-line-summary-second-line
+  "D400",  # ends-in-period
+  "D403",  # first-line-capitalized
+  "D415",  # ends-in-punctuation
+  "UP015",  # redundant-open-modes
+  "ANN",  # flake8-annotations
+  "S101",  # assert
+  "BLE",  # flake8-blind-except
+  "FBT",  # flake8-boolean-trap
+  "COM",  # flake8-commas
+  "EM",  # flake8-errmsg
+  "T20",  # flake8-print
+  "RET",  # flake8-return
+  "SLF",  # flake8-self
+  "TCH",  # flake8-type-checking
+  "PTH",  # flake8-use-pathlib
+  "ERA",  # eradicate
+  "PD901",  # df-is-a-bad-variable-name
+  "PLR0911",  # too-many-return-statements
+  "PLR0912",  # too-many-branches
+  "PLR0913",  # too-many-arguments
+  "PLR0915",  # too-many-statements
+  "PLR2004",  # magic-value-comparison
+  "TRY002",  # raise-vanilla-class
+  "TRY003",  # raise-vanilla-args
+  "TRY201",  # verbose-raise
+  "RUF001",  # ambiguous-unicode-character-string
+  "RUF002",  # ambiguous-unicode-character-docstring
+  "RUF003",  # ambiguous-unicode-character-comment
+  "D103",  # undocumented-public-function
+  "UP006",  # non-pep585-annotation
+  "F811",  # redefined-while-unused
+  "F841",  # unused-variable
+  "ISC001",  # single-line-implicit-string-concatenation
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+format = "{base}"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry_dynamic_versioning.backend"

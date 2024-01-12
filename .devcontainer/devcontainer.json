@@ -1,0 +1,118 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.154.0/containers/docker-existing-dockerfile
+{
+	"name": "KDTree playground",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": ".",
+		"args": {"network": "host"},
+		"target": "devcontainer"
+	},
+	"containerUser": "vscode",
+	"remoteUser": "vscode",
+	"updateRemoteUserUID": true,
+	// マウント対象のディレクトリを事前に作成する
+	"initializeCommand": "mkdir -p ${localWorkspaceFolder}/.devcontainer/.venv && mkdir -p ${localWorkspaceFolder}/.devcontainer/.vscode-server",
+	"mounts": [
+		// ホスト側のvenvとコンテン側のvenvを分類して、ホスト側でpoetryコマンドを利用できるようにする
+		"source=${localWorkspaceFolder}/.devcontainer/.venv,target=${containerWorkspaceFolder}/.venv,type=bind",
+		// 拡張機能のインストール時、依存関係を考慮した順番でインストールしてくれなくてイライラするので対策 (https://github.com/microsoft/vscode/issues/149309)
+		"source=${localWorkspaceFolder}/.devcontainer/.vscode-server,target=/home/vscode/.vscode-server,type=bind,consistency=cached"
+	],
+	"runArgs": [
+		"--init",
+		"--net=host",
+		"-e", "DISPLAY=${localEnv:DISPLAY}",
+		"-e", "QT_X11_NO_MITSHM=1",
+		"-v", "/tmp/.X11-unix:/tmp/.X11-unix",
+		// コンテナ間で共有メモリを使用できるようにするための設定
+		"--ipc=host",
+		// GPU for jetson
+		//"--runtime=nvidia"
+		"--gpus", "all"
+		// other
+		//"--privileged"
+	],
+	"customizations": {
+		"user": {
+			"extensions": [
+				"mosapride.zenkaku",
+				"ms-azuretools.vscode-docker",
+				"tamasfe.even-better-toml",
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-toolsai.jupyter",
+				"charliermarsh.ruff",
+				"ms-python.mypy-type-checker",
+				"njpwerner.autodocstring",
+				"jgclark.vscode-todo-highlight",
+				"streetsidesoftware.code-spell-checker",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"GitHub.copilot-labs"
+			],
+			// Python コードのフォーマッタやリンタ等の設定
+			"settings": {
+				// ターミナルやファイル探索の除外パス設定
+				"terminal.integrated.allowChords": false,
+				"files.insertFinalNewline": true,
+				"files.exclude": {
+					"**/.devcontainer/.extensions": true,
+					"**/__pycache__": true,
+					"**/.pytest_cache": true
+				},
+				"files.watcherExclude": {
+					"**/.devcontainer/.extensions": true
+				},
+				"files.autoSave": "afterDelay",
+				"files.autoSaveDelay": 1000,
+				"files.useExperimentalFileWatcher": true,
+				"search.exclude": {
+					"**/.devcontainer/.extensions": true
+				},
+				"python.defaultInterpreterPath": ".venv/bin/python3",
+				"python.languageServer": "Pylance",
+				"python.analysis.completeFunctionParens": true,
+				"python.autoComplete.extraPaths": [
+					".venv/lib/python3.8/site-packages/",
+					"tests"
+				],
+				"python.analysis.extraPaths": [
+					".venv/lib/python3.8/site-packages/",
+					"tests"
+				],
+				// python言語用の設定
+				"[python]": {
+					"editor.formatOnSave": false,
+					"editor.formatOnSaveMode": "file",
+					"editor.defaultFormatter": "charliermarsh.ruff"
+				},
+				"ruff.path": ["${containerWorkspaceFolder}/.venv/bin/ruff"],
+				"ruff.enable": true,
+				"ruff.fixAll": true,
+				"ruff.lint.run": "onSave",
+				"mypy-type-checker.importStrategy": "fromEnvironment",
+				"mypy-type-checker.showNotifications": "onError",
+				"mypy-type-checker.ignorePatterns": [
+					"**/site-packages/**/*.py",
+					".vscode/*.py"
+				],
+				"python.testing.pytestEnabled": true,
+				"python.testing.pytestPath": "${workspaceRoot}/.venv/bin/pytest",
+				"python.testing.autoTestDiscoverOnSaveEnabled": false,
+				"cSpell.enabled": true,
+				"cSpell.ignorePaths": [
+					"**/.git/**",
+					"**/.idea/**",
+					"**/.mypy_cache/**",
+					"**/.pytest_cache/**",
+					"**/.venv/**",
+					"**/__pycache__/**"
+				],
+				// autoDocstringの設定
+				"autoDocstring.docstringFormat": "google-notypes",
+				"python.terminal.activateEnvironment": true
+			}
+		}
+	}
+}
