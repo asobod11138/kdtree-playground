@@ -34,7 +34,7 @@
 		//"--privileged"
 	],
 	"customizations": {
-		"user": {
+		"vscode": {
 			"extensions": [
 				"mosapride.zenkaku",
 				"ms-azuretools.vscode-docker",
