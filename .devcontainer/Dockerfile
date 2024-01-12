@@ -1,17 +1,18 @@
 FROM ubuntu:20.04 as devcontainer
 
-SHELL ["/bin/bash", "-c"]
-
-# Install prerequisites, Set locale & timezone
+# 最低限必要なライブラリのインストール
 RUN set -x \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        tzdata \
-        ca-certificates \
+        gnupg2 \
         software-properties-common \
         language-pack-ja \
-    && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
+        tzdata \
+        curl \
+        lsb-release \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # ロケールとタイムゾーンの設定
 RUN update-locale LANG=ja_JP.UTF-8 LANGUAGE=ja_JP:ja \
@@ -21,65 +22,38 @@ ENV LANG ja_JP.UTF-8
 ENV LC_ALL ja_JP.UTF-8
 ENV LC_CTYPE ja_JP.UTF-8
 
-# common tools
+# 開発に必要なパッケージのインストール
 RUN set -x \
+    # Python をインストールするために、deadsnakes PPA を追加
+    && add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        software-properties-common \
+        # Python 関連
+        python3-dev \
+        python3-distutils \
+        python-is-python3 \
+        # 便利ツール
         bash-completion \
-        curl \
+        build-essential \
         git \
-        gnupg2 \
         iputils-ping \
         jq \
         less \
-        make \
         net-tools \
         openssh-client \
+        shellcheck \
+        sudo \
         tar \
         time \
         unzip \
-        xz-utils \
-        gosu \
-        zip \
         vim \
         wget \
-        unzip \
-        gnupg \
-        gcc \
-        lsb-release \
-    && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
+        xz-utils \
+        zip \
+        gem \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# create user
-RUN set -x \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-        sudo \
-    && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* \
-    && echo "user ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/ALL \
-    && groupadd \
-        --gid 5000 \
-        vscode \
-    && useradd \
-        --uid 5000 \
-        --gid 5000 \
-        --home-dir /home/vscode \
-        --create-home \
-        --shell /bin/bash \
-        vscode \
-    && usermod -aG video vscode
-
-# python3.8
-RUN set -x \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-        python3.8-dev \
-        python3-pip \
-        python3-distutils \
-        python3-venv \
-    && apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/* \
-    && ln -s $(which python3.8) /usr/local/bin/python
-    
 # Python の設定
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DEFAULT_TIMEOUT=100 \
@@ -91,6 +65,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN set -x \
     && curl -sSL https://bootstrap.pypa.io/get-pip.py | python3
 
+# vscode ユーザーの追加と sudo 権限の付与
+RUN useradd -m -s /bin/bash -u 5000 -U vscode \
+    && echo "vscode ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/ALL
+
 USER vscode
 
 # poetry のインストール
@@ -99,6 +77,3 @@ RUN set -x \
       curl -sSL https://install.python-poetry.org | python3 - \
     && poetry config virtualenvs.in-project true \
     && poetry self add "poetry-dynamic-versioning[plugin]"
-
-ADD entrypoint.sh /entrypoint.sh
-ENTRYPOINT [ "bash", "-eux", "/entrypoint.sh" ]
