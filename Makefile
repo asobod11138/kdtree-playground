@@ -26,7 +26,10 @@ lint:
 	poetry run ruff check ${TEST_FILES} --ignore PGH,DTZ,E501,ANN,RUF100
 
 test:
-	poetry run pytest
+	poetry run pytest --benchmark-skip
+
+test-benchmark:
+	poetry run pytest --benchmark-only
 
 mypy:
 	poetry run mypy ${SOURCE_FILES}
