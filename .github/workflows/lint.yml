@@ -3,7 +3,7 @@ name: Lint & Test on Push
 on: [push]
 
 jobs:
-  lint:
+  lint_test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -18,4 +18,4 @@ jobs:
     - name: Run lint
       run: make lint
     - name: Run test
-      run: test
+      run: make test
