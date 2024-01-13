@@ -21,3 +21,13 @@ pytest-benchmarksを使って計測
 
 自分の環境（CPU: i7-13700K, GPU: RTX4080, RAM: 32GB(DDR5-4800), OS: WSL2 Ubuntu22.04）での結果
 ![Benchmark Result Image Home PC](readme_assets/kdtree_benchmark_homePC.png)
+
+# TODO
+* 複数のクエリの一括探索する機能とその速度計測
+  - 今は1点のみの探索しか実装していない
+  - 複数点入ってきたときに単純にfor文で回すのじゃなく、マルチプロセスにするなどの工夫をする実装
+  - その速度計測
+    - ↑で測っている「近傍点探索速度」は1点の探索を200回行ったものなので、意味合いが異なるはず
+    - 要は、ここで使っているfor文で回すのがベースラインの実装になる
+* GPU実装とか、C++実装（pybindする）とか試したいな
+* aaa
