@@ -42,7 +42,8 @@
 				"ms-python.vscode-pylance",
 				"ms-python.python",
 				"charliermarsh.ruff",
-				"tamasfe.even-better-toml"
+				"tamasfe.even-better-toml",
+				"starkwang.markdown"
 			],
 			// Python コードのフォーマッタやリンタ等の設定
 			"settings": {
