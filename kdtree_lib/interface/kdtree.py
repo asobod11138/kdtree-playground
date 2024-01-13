@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 import numpy as np
 
@@ -37,7 +38,7 @@ class KDTree(ABC):
         self.root: Node | None = self.build_tree(points)
 
     @abstractmethod
-    def build_tree(self, points: np.ndarray, depth: int = 0) -> Node | None:
+    def build_tree(self, points: np.ndarray, depth: int = 0) -> Any:
         """KDTreeを構築する"""
 
     def _build_tree_imple(self, points: np.ndarray, depth: int = 0) -> Node | None:
@@ -45,11 +46,8 @@ class KDTree(ABC):
         if len(points) == 0:
             return None
 
-        # pointsがリストの場合はNumPy配列に変換
-        if isinstance(points, list):
-            points = np.array(points)
-        elif not isinstance(points, np.ndarray):
-            raise TypeError("pointsはリストまたはNumPy配列である必要があります。")
+        if not isinstance(points, np.ndarray):
+            raise TypeError(f"pointはNumPy配列である必要がありますが、{type(points)}が渡されました。")
 
         # 軸を選択（3次元の場合、x軸、y軸、z軸を交互に選択）
         k = len(points[0])  # ポイントの次元

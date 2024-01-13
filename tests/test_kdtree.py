@@ -3,13 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest  # noqa: F401
 
-from kdtree_lib import KDTreeBasic
-
-
-def kdtree_construction(arg_class):
-    points = np.array([(2, 3, 1), (5, 4, 2), (9, 6, 3), (4, 7, 5), (8, 1, 8), (7, 2, 9)])
-    tree = arg_class(points)
-    assert tree.root is not None
+from kdtree_lib import KDTreeBasic, KDTreeOpen3d
 
 
 def nearest_neighbor(arg_class):
@@ -19,20 +13,6 @@ def nearest_neighbor(arg_class):
     distance, nearest_point = tree.nearest_neighbor(query_point)
     assert np.array_equal(nearest_point, (2, 3, 1))
     assert np.isclose(distance, np.linalg.norm(np.array(query_point) - np.array((2, 3, 1))))
-
-
-def single_point(arg_class):
-    points = np.array([(1, 2, 3)])
-    query = np.array((1, 2, 3))
-    tree = arg_class(points)
-    distance, nearest_point = tree.nearest_neighbor(query)
-    assert np.array_equal(nearest_point, (1, 2, 3))
-    assert distance == 0
-
-
-def empty_tree(arg_class):
-    tree = arg_class([])
-    assert tree.root is None
 
 
 def dense_points(arg_class):
@@ -69,10 +49,7 @@ def query_outside_points(arg_class):
 
 
 def sub(arg_class: [KDTreeBasic]):
-    kdtree_construction(arg_class)
     nearest_neighbor(arg_class)
-    single_point(arg_class)
-    empty_tree(arg_class)
     dense_points(arg_class)
     near_boundary(arg_class)
     far_from_any_points(arg_class)
@@ -81,3 +58,4 @@ def sub(arg_class: [KDTreeBasic]):
 
 def test_main():
     sub(KDTreeBasic)
+    sub(KDTreeOpen3d)

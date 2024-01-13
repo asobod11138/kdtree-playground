@@ -15,12 +15,9 @@ class NodeBasic(Node):
 class KDTreeBasic(KDTree):
     """KDTreeBasicの実装"""
 
-    def __init__(self, points: np.ndarray | list | tuple) -> None:
-        # pointsがリストの場合はNumPy配列に変換
-        if isinstance(points, (list, tuple)):
-            points = np.array(points)
-        elif not isinstance(points, np.ndarray):
-            raise TypeError("pointはリストまたはNumPy配列である必要があります。")
+    def __init__(self, points: np.ndarray) -> None:
+        if not isinstance(points, np.ndarray):
+            raise TypeError(f"pointはNumPy配列である必要がありますが、{type(points)}が渡されました。")
         self.root: NodeBasic | None = self.build_tree(points)
 
     def build_tree(self, points: np.ndarray, depth: int = 0) -> NodeBasic | None:
@@ -28,12 +25,10 @@ class KDTreeBasic(KDTree):
         node = self._build_tree_imple(points, depth)
         return NodeBasic.from_node(node)
 
-    def _nearest_neighbor_impl(self, point: np.ndarray | list | tuple, depth: int = 0) -> tuple[float, np.ndarray | None]:
+    def _nearest_neighbor_impl(self, point: np.ndarray, depth: int = 0) -> tuple[float, np.ndarray | None]:
         """最近傍点を探索する"""
-        if isinstance(point, (list, tuple)):
-            point = np.array(point)
-        elif not isinstance(point, np.ndarray):
-            raise TypeError("pointはリストまたはNumPy配列である必要があります。")
+        if not isinstance(point, np.ndarray):
+            raise TypeError(f"pointはNumPy配列である必要がありますが、{type(point)}が渡されました。")
         dist, nearest_point = self._nearest(self.root, point, depth)
         return dist, nearest_point
 
@@ -72,10 +67,10 @@ class KDTreeBasic(KDTree):
 
 if __name__ == "__main__":
     # 3次元データ点の例
-    points = np.array([(2, 3, 1), (9, 6, 3), (4, 7, 5), (7, 2, 9), (-1, 0, 5), (-5, -1.5, -9.54), (0, 0, 0)])
+    points = np.array([(9, 6, 3), (4, 7, 5), (7, 2, 9), (-1, 0, 5), (-5, -1.5, -9.54), (0, 0, 0), (2, 3, 1)])
     tree = KDTreeBasic(points)
 
     # クエリポイント（3次元）
-    query_point = np.array((2.5, 3.5, 1.5))
+    query_point = np.array((2, 1.5, 0.5))
     distance, nearest_point = tree.nearest_neighbor(query_point)
     print(f"Nearest to {query_point} is {nearest_point} with distance {distance}")
