@@ -1,4 +1,4 @@
-name: Lint on Push
+name: Lint & Test on Push
 
 on: [push]
 
@@ -17,3 +17,5 @@ jobs:
       run: poetry install
     - name: Run lint
       run: make lint
+    - name: Run test
+      run: test
