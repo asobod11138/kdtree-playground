@@ -3,7 +3,7 @@ name: Lint & Test on Push
 on: [push]
 
 jobs:
-  lint:
+  lint_test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -17,6 +17,5 @@ jobs:
       run: poetry install
     - name: Run lint
       run: make lint
-  test:
     - name: Run test
-      run: test
+      run: make test
