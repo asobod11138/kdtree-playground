@@ -38,7 +38,7 @@ class KDTree(ABC):
         self.root: Node | None = self.build_tree(points)
 
     @abstractmethod
-    def build_tree(self, points: np.ndarray, depth: int = 0) -> Any:
+    def build_tree(self, points: np.ndarray, depth: int = 0) -> Any:  # noqa: ANN401
         """KDTreeを構築する"""
 
     def _build_tree_imple(self, points: np.ndarray, depth: int = 0) -> Node | None:

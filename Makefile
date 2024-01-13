@@ -15,7 +15,8 @@ format:
 	poetry run ruff format --diff ${TEST_FILES}
 
 format-apply:
-	poetry run ruff check ${SOURCE_FILES} ${TEST_FILES} --fix --ignore ANN
+	poetry run ruff check ${SOURCE_FILES} --fix --exit-zero
+	poetry run ruff check ${TEST_FILES} --fix --ignore ANN
 	poetry run ruff format ${SOURCE_FILES} ${TEST_FILES}
 
 lint:
