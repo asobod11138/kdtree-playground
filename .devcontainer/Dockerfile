@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 as devcontainer
+FROM nvidia/cuda:12.3.1-devel-ubuntu20.04 as devcontainer
 
 # 最低限必要なライブラリのインストール
 RUN set -x \
@@ -28,10 +28,6 @@ RUN set -x \
     && add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
-        # Python 関連
-        python3-dev \
-        python3-distutils \
-        python-is-python3 \
         # 便利ツール
         bash-completion \
         build-essential \
@@ -51,8 +47,24 @@ RUN set -x \
         xz-utils \
         zip \
         gem \
+        libx11-xcb1 \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Python3.10 のインストール
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends \
+        python3.10 \
+        python3.10-dev \
+        python3.10-distutils \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python3.10 の設定
+RUN set -x \
+    && ln -s /usr/bin/python3.10 /usr/local/bin/python3 \
+    && ln -s /usr/bin/python3.10 /usr/local/bin/python 
 
 # Python の設定
 ENV PYTHONDONTWRITEBYTECODE=1 \

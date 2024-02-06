@@ -16,11 +16,12 @@ name = "PyPI"
 priority = "primary"
  
 [tool.poetry.dependencies]
-python = ">=3.8"
+python = ">=3.10"
 numpy = "*"
 pytest-benchmark = "^4.0.0"
 tqdm = "^4.66.1"
 open3d = "0.16.0"
+cupy = "^13.0.0"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.3"
@@ -38,7 +39,7 @@ sphinx-last-updated-by-git = "^0.3.6"
 sphinx-click = "^5.0.1"
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.10"
 
 [[tool.mypy.overrides]]
 module = ["ulid", "scipy.spatial"]

@@ -27,11 +27,7 @@
 		"-v", "/tmp/.X11-unix:/tmp/.X11-unix",
 		// コンテナ間で共有メモリを使用できるようにするための設定
 		"--ipc=host",
-		// GPU for jetson
-		//"--runtime=nvidia"
 		"--gpus", "all"
-		// other
-		//"--privileged"
 	],
 	"customizations": {
 		"vscode": {
