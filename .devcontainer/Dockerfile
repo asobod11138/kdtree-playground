@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.3.1-devel-ubuntu20.04 as devcontainer
+FROM nvidia/cuda:12.0.1-devel-ubuntu20.04 as devcontainer
 
 # 最低限必要なライブラリのインストール
 RUN set -x \

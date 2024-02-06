@@ -3,7 +3,7 @@ from __future__ import annotations
 import numpy as np
 import pytest  # noqa: F401
 
-from kdtree_lib import KDTreeBasic, KDTreeOpen3d
+from kdtree_lib import KDTreeBasic, KDTreeCupy, KDTreeOpen3d
 
 
 def nearest_neighbor(arg_class):
@@ -59,3 +59,4 @@ def sub(arg_class: [KDTreeBasic]):
 def test_main():
     sub(KDTreeBasic)
     sub(KDTreeOpen3d)
+    sub(KDTreeCupy)
