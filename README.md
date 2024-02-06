@@ -2,6 +2,8 @@
 kdtreeを色々試したい。
 1. kdtree_basic: numpyのみで自前実装。アルゴリズムの理解と速度計測のベースライン
 2. kdtree_open3d: open3dに実装されているKDTreeを使った実装。別のライブラリで良い感じに実装されているものと速度比較したいモチベ。
+3. kdtree_cupy: basicのnumpyをcupyに変えただけ。cupyにKDTreeのGPU実装あるじゃん！と思って試そうとしたらscipyのドキュメントと混乱してて、cupyにKDTreeは実装されてなかった(;_;)
+cupyを使えるように整備したので、せっかくだから適当に使ってみた感じ。
 
 # 速度比較結果
 以下のコマンドで速度比較ができる。
